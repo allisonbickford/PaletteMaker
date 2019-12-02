@@ -3,8 +3,7 @@ package com.example.palettemaker
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Color
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -14,6 +13,10 @@ import android.graphics.drawable.BitmapDrawable
 import androidx.core.graphics.toColor
 import com.google.android.material.button.MaterialButton
 import kotlin.math.roundToInt
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import androidx.core.graphics.ColorUtils
+import androidx.core.view.doOnLayout
 
 
 class ColorSelectorActivity: AppCompatActivity() {
@@ -24,21 +27,26 @@ class ColorSelectorActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_color_selector)
         val extras = intent.extras
-        val imageBitmap = extras?.get("image")
+        val imagePath = extras?.get("image_path") as String
+
         val imageView = findViewById<ImageView>(R.id.color_selector_image_view)
-        imageView.setImageBitmap(imageBitmap as Bitmap?)
+        imageView.setImageBitmap(BitmapFactory.decodeFile(imagePath))
+
+        // confirm selection
+        val confirmButton = findViewById<MaterialButton>(R.id.confirm_color_button)
+        confirmButton.setOnClickListener { selectColor() }
 
         // move selector to wherever user clicked on image
         val selector = findViewById<MovableFloatingActionButton>(R.id.selector_button)
-        selector.x = imageView.width / 2.toFloat()
-        selector.y = imageView.height / 2.toFloat()
+
+        selector.x = (imageView.drawable.intrinsicWidth.toDouble() * .37).toFloat()
+        selector.y = (imageView.drawable.intrinsicHeight.toDouble() * .35).toFloat()
         imageView.setOnTouchListener { view, event -> moveButton(view, event, selector) }
+        imageView.doOnLayout { updateColor() } // wait for image view to load?
 
         // updates the color when dragging the button
         selector.setOnTouchListener { view, motionEvent -> updateColor(); selector.onTouch(view, motionEvent) }
 
-        // confirm selection
-        findViewById<MaterialButton>(R.id.confirm_color_button).setOnClickListener { selectColor() }
     }
 
     private fun moveButton(view: View?, event: MotionEvent?, selector: MovableFloatingActionButton): Boolean {
@@ -72,13 +80,22 @@ class ColorSelectorActivity: AppCompatActivity() {
 
         val selectButton = findViewById<MaterialButton>(R.id.confirm_color_button)
         hexColor = String.format("#%06X", 0xFFFFFF and pixel.toColor().toArgb())
-        selectButton.background.setTint(pixel.toColor().toArgb())
+        val backgroundColor = pixel.toColor().toArgb()
+        selectButton.background.setTint(backgroundColor)
+
+        // make sure text is readable by calculating contrast and swapping color if needed
+        if (ColorUtils.calculateContrast(Color.WHITE, backgroundColor) < 4) { // 4 is arbitrary
+            selectButton.setTextColor(Color.BLACK)
+            selectButton.iconTint = ColorStateList.valueOf(Color.BLACK)
+        } else {
+            selectButton.setTextColor(Color.WHITE)
+            selectButton.iconTint = ColorStateList.valueOf(Color.WHITE)
+        }
         selectButton.text = hexColor
     }
 
     private fun selectColor() {
-        var result = Intent()
-        // TODO: put color selection here and add to result
+        val result = Intent()
         result.putExtra("color", hexColor)
         setResult(Activity.RESULT_OK, result)
         finish()
