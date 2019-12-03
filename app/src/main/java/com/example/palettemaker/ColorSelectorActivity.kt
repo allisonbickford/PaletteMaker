@@ -46,7 +46,6 @@ class ColorSelectorActivity: AppCompatActivity() {
 
         // updates the color when dragging the button
         selector.setOnTouchListener { view, motionEvent -> updateColor(); selector.onTouch(view, motionEvent) }
-
     }
 
     private fun moveButton(view: View?, event: MotionEvent?, selector: MovableFloatingActionButton): Boolean {

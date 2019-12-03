@@ -1,28 +1,34 @@
 package com.example.palettemaker
 
+import android.Manifest
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.widget.ImageView
-import android.widget.Toolbar
+import android.util.Log
+import android.widget.GridView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.fragment.app.DialogFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.android.synthetic.main.activity_color_selector.*
 import java.io.File
 import java.io.IOException
 import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
-class PaletteActivity: AppCompatActivity() {
+
+class PaletteActivity: AppCompatActivity(), GalleryDialogFragment.GalleryDialogListener {
     val REQUEST_IMAGE_CAPTURE = 1
     val COLOR_SELECTOR_INTENT = 2
+    val REQUEST_GALLERY_SELECT = 3
     var currentPhotoPath: String = ""
+    var colors: ArrayList<String> = ArrayList()
+    var colorsAdapter = ColorsAdapter(this, colors)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +36,32 @@ class PaletteActivity: AppCompatActivity() {
         setContentView(R.layout.activity_palette)
         val cameraButton = findViewById<FloatingActionButton>(R.id.camera_button)
         cameraButton.setOnClickListener { dispatchTakePictureIntent() }
+
+        val galleryButton = findViewById<FloatingActionButton>(R.id.gallery_select)
+        val galleryDialog = GalleryDialogFragment()
+        galleryButton.setOnClickListener {
+            galleryDialog.show(supportFragmentManager, "GalleryDialogFragment")
+        }
+
+        val gridView = findViewById<GridView>(R.id.palette_view)
+        gridView.adapter = colorsAdapter
+    }
+
+    override fun onDialogGalleryClick(dialog: DialogFragment) {
+        dispatchGalleryImageIntent()
+    }
+
+    override fun onDialogLastImageClick(dialog: DialogFragment) {
+        val selectorIntent = Intent(this, ColorSelectorActivity::class.java)
+        selectorIntent.putExtra("image_path", currentPhotoPath)
+        startActivityForResult(selectorIntent, COLOR_SELECTOR_INTENT)
+    }
+
+    private fun dispatchGalleryImageIntent() {
+        getGalleryPermission()
+        val photoPickerIntent = Intent(Intent.ACTION_PICK)
+        photoPickerIntent.type = "image/*"
+        startActivityForResult(photoPickerIntent, REQUEST_GALLERY_SELECT)
     }
 
     /**
@@ -102,13 +134,56 @@ class PaletteActivity: AppCompatActivity() {
             val selectorIntent = Intent(this, ColorSelectorActivity::class.java)
             selectorIntent.putExtra("image_path", currentPhotoPath)
             startActivityForResult(selectorIntent, COLOR_SELECTOR_INTENT)
-        } else if (requestCode == COLOR_SELECTOR_INTENT && resultCode == RESULT_OK) {
+        } else if (requestCode == COLOR_SELECTOR_INTENT) {
             val colorHexCode = data?.extras?.get("color")
             if (colorHexCode != null) {
-                
+                this.colorsAdapter.addColor(colorHexCode as String)
+                this.colorsAdapter.notifyDataSetChanged()
+            }
+        } else if (requestCode == REQUEST_GALLERY_SELECT && resultCode == RESULT_OK) {
+            val selectorIntent = Intent(this, ColorSelectorActivity::class.java)
+            Log.d("DATA****", data?.data.toString())
+            val selectedImage = data?.data
+            if (selectedImage != null) {
+                selectorIntent.putExtra("image_path", getRealPathFromURI(selectedImage))
+                startActivityForResult(selectorIntent, COLOR_SELECTOR_INTENT)
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
 
+    /**
+     * refactored from
+     * https://stackoverflow.com/questions/36336498/get-real-path-from-android-uri-after-selecting-image-from-gallery
+     */
+    private fun getRealPathFromURI(contentURI: Uri): String {
+        val path: String
+        val cursor = contentResolver.query(contentURI, null, null, null, null)
+        if (cursor == null) {
+            path = contentURI.path.orEmpty()
+        } else {
+            cursor.moveToFirst()
+            val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+            path = cursor.getString(idx)
+            cursor.close()
+        }
+        return path
+    }
+
+    private fun getGalleryPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED||
+            ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ),
+                1052)
+        }
+    }
 }
