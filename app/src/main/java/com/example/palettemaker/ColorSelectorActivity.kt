@@ -30,7 +30,9 @@ class ColorSelectorActivity: AppCompatActivity() {
         val imagePath = extras?.get("image_path") as String
 
         val imageView = findViewById<ImageView>(R.id.color_selector_image_view)
-        imageView.setImageBitmap(BitmapFactory.decodeFile(imagePath))
+        val bitmap = BitmapFactory.decodeFile(imagePath)
+        val orientedBitmap = ExifUtil.rotateBitmap(imagePath, bitmap)
+        imageView.setImageBitmap(orientedBitmap)
 
         // confirm selection
         val confirmButton = findViewById<MaterialButton>(R.id.confirm_color_button)
@@ -42,7 +44,7 @@ class ColorSelectorActivity: AppCompatActivity() {
         selector.x = (imageView.drawable.intrinsicWidth.toDouble() * .37).toFloat()
         selector.y = (imageView.drawable.intrinsicHeight.toDouble() * .35).toFloat()
         imageView.setOnTouchListener { view, event -> moveButton(view, event, selector) }
-        imageView.doOnLayout { updateColor() } // wait for image view to load?
+//        imageView.doOnLayout { updateColor() } // wait for image view to load?
 
         // updates the color when dragging the button
         selector.setOnTouchListener { view, motionEvent -> updateColor(); selector.onTouch(view, motionEvent) }

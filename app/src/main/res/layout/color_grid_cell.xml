@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,8 +9,11 @@
 
     <Button
         android:id="@+id/color_square"
-        android:layout_width="100dp"
+        android:layout_width="115dp"
         android:layout_height="75dp"
-        android:backgroundTint="@android:color/black" />
+        android:backgroundTint="@android:color/transparent"
+        android:clickable="false"
+        android:focusable="false"
+        app:rippleColor="@android:color/transparent" />
 
 </LinearLayout>

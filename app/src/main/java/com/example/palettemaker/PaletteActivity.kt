@@ -40,7 +40,11 @@ class PaletteActivity: AppCompatActivity(), GalleryDialogFragment.GalleryDialogL
         val galleryButton = findViewById<FloatingActionButton>(R.id.gallery_select)
         val galleryDialog = GalleryDialogFragment()
         galleryButton.setOnClickListener {
-            galleryDialog.show(supportFragmentManager, "GalleryDialogFragment")
+            if (currentPhotoPath.isEmpty()) {
+                dispatchGalleryImageIntent()
+            } else {
+                galleryDialog.show(supportFragmentManager, "GalleryDialogFragment")
+            }
         }
 
         val gridView = findViewById<GridView>(R.id.palette_view)

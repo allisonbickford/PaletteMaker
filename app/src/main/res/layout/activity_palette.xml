@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,12 +9,12 @@
         android:id="@+id/palette_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnWidth="100dp"
+        android:columnWidth="115dp"
         android:gravity="center"
         android:horizontalSpacing="8dp"
         android:numColumns="auto_fit"
-        android:stretchMode="spacingWidthUniform"
-        android:verticalSpacing="24dp" >
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="10dp">
 
     </GridView>
 
@@ -47,7 +46,7 @@
         android:elevation="2dp"
         android:focusable="true"
         android:tint="@android:color/white"
-        app:backgroundTint="@android:color/holo_green_dark"
+        app:backgroundTint="@android:color/holo_green_light"
         app:srcCompat="@drawable/baseline_insert_photo_black_18dp" />
 
 </RelativeLayout>
