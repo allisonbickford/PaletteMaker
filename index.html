@@ -1,19 +1,19 @@
 <html>
     <body>
         <h1>
-            Welcome! Today we are going to show you how to implement the camera on an Android project. We will be using Kotlin to create our app. 
+            Welcome!
         </h1>
         
         <div>
-            Starting off, create a new project in Android Studio.
+            Today we are going to show you how to implement the camera on an Android project. We will be using Kotlin to create our app.<br>
+            Starting off, create a new project in Android Studio.<br>
             
-            <img src="assets/newproject.png" width="320" height="240" ></img>
+            <img src="assets/newproject.png" width="400" height="200"/>
             
-            When prompted, choose “Empty Activity” and name your app. We have chosen “CameraDemo”, but please be as creative or functional as you desire!
-            This app will put images into a slideshow for your viewing pleasure (or your Mom’s)!
-        
-        
-            Make sure you have Kotlin enabled by verifying it is in your project-level build.gradle dependencies:
+            When prompted, choose “Empty Activity” and name your app. We have chosen “CameraDemo”, but please be as creative or functional as you desire!<br>
+            This app will put images into a slideshow for your viewing pleasure (or your Mom’s)!<br>
+            <p>
+            Make sure you have Kotlin enabled by verifying it is in your project-level build.gradle dependencies:<br>
             <code>
                 <pre>
                     dependencies {
@@ -25,7 +25,7 @@
                 </pre>
             </code>
     
-            We didn’t change the module-level dependencies, but I will put them here so you can verify should any troubles arise:
+            We didn’t change the module-level dependencies, but I will put them here so you can verify should any troubles arise:<br>
             
             <code>
                 <pre>
@@ -44,16 +44,16 @@
             </code>
 
             To start off, we need to make a place to put our images! Firstly, add a "RelativeLayout" to your default ConstraintLayout.</br>
-            Put an ImageView into your “activity_main.xml”. Select any image (we will be switching it out later). We are using the id “main_image_view”. Make sure you change the layout_width and layout_height to match_parent.
+            Put an ImageView into your “activity_main.xml”. Select any image (we will be switching it out later). We are using the id “main_image_view”. Make sure you change the layout_width and layout_height to match_parent.<br>
                 
             <video width="320" height="240" controls>
-                    <source src="assets/placingpieces.mp4" type="video/mp4">
+                <source src="assets/placingpieces.mp4" type="video/mp4">
             </video>
                 
                 
-            We will also add a FloatingActionButton to trigger the camera. Add a FloatingActionButton to the screen and search for “camera” when prompted to choose an icon. Use the icon “ic_menu_camera”. Give it a distinctive id. We will use “camera_button”.
+            We will also add a FloatingActionButton to trigger the camera. Add a FloatingActionButton to the screen and search for “camera” when prompted to choose an icon. Use the icon “ic_menu_camera”. Give it a distinctive id. We will use “camera_button”.<br>
                 
-            Navigate to the “Text” tab in Android’s Layout Builder and add the following code below the id of your FloatingActionButton:
+            Navigate to the “Text” tab in Android’s Layout Builder and add the following code below the id of your FloatingActionButton:<br>
                 
             <code>
                 <pre>
@@ -64,9 +64,9 @@
                 </pre>
             </code>
             
-            This will align your button centered horizontally at the bottom of the screen, leaving space between the bottom of the screen and your button.
+            This will align your button centered horizontally at the bottom of the screen, leaving space between the bottom of the screen and your button.<br>
             
-            In order to use the camera, we have to register it in the AndroidManifest.xml. Add the following line between the manifest and application tags:
+            In order to use the camera, we have to register it in the AndroidManifest.xml. Add the following line between the manifest and application tags:<br>
             
             <code>
                 <pre>
@@ -74,7 +74,8 @@
                     android:required="true" /&gt;
                 </pre>
             </code>
-            Next, we have to create an intent to the camera in our MainActivity. Add this below your onCreate method:
+
+            Next, we have to create an intent to the camera in our MainActivity. Add this below your onCreate method:<br>
             
             <code>
                 <pre>
@@ -90,139 +91,189 @@
                 </pre>
             </code>
                 
-                Be sure to add the following imports:
+            Be sure to add the following imports:<br>
+            
+            <code>
+                <pre>
+                    import android.content.Intent
+                    import android.provider.MediaStore
+                </pre>
+            </code>
+            
+            Let’s connect our button to the camera intent! In your MainActivity’s onCreate function, add the following lines of code:<br>
+            
+            <code>
+                <pre>
+                    val cameraButton = findViewById&lt;FloatingActionButton&gt;(R.id.camera_button)
+                    cameraButton.setOnClickListener { dispatchTakePictureIntent() }
+                </pre>
+            </code>
+            
+            This is a great time to run your app and make sure it works. You should be able to click the camera button, take a picture, and be sent back.<br>
                 
-                import android.content.Intent
-                import android.provider.MediaStore
-                
-                
-                Let’s connect our button to the camera intent! In your MainActivity’s onCreate function, add the following lines of code:
-                
-                val cameraButton = findViewById<FloatingActionButton>(R.id.camera_button)
-                cameraButton.setOnClickListener { dispatchTakePictureIntent() }
-                
-                This is a great time to run your app and make sure it works. You should be able to click the camera button, take a picture, and be sent back.
-                
-                <RECORDING HERE>
-                
-                Now that we can take a picture, let’s put it into our ImageView. Add the following function to your MainActivity.
-                
-                override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-                   if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-                       val imageView = findViewById<ImageView>(R.id.main_image_view)
-                       val imageBitmap = data?.extras?.get("data") as Bitmap
-                       imageView.setImageBitmap(imageBitmap)
-                   }
-                   super.onActivityResult(requestCode, resultCode, data)
+            
+            
+            Now that we can take a picture, let’s put it into our ImageView. Add the following function to your MainActivity.
+            
+            override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+                if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+                    val imageView = findViewById<ImageView>(R.id.main_image_view)
+                    val imageBitmap = data?.extras?.get("data") as Bitmap
+                    imageView.setImageBitmap(imageBitmap)
                 }
+                super.onActivityResult(requestCode, resultCode, data)
+            }
+            
+            When you successfully take a picture, this will set the image in the ImageView to the picture you just took. Run your app and see how it works!<br>
+            
+            <img src="assets/blurrypicture.png" width="300px" height="550px"/>
+
+            Wow, that picture is blurry! Let’s make this look less like it came from a 2004 Motorola phone, shall we? First, we have to save the image to our phone. In the AndroidManifest.xml, below the line we entered before with the tag uses-feature, add the following:<br>
+            
+            <code>
+                <pre>
+                    &lt;uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /&gt;
+                </pre>
+            </code>
                 
-                When you successfully take a picture, this will set the image in the ImageView to the picture you just took. Run your app and see how it works!
+            This will let us put the image in storage. Now, let’s actually make the image. This code will do that for us:<br>
                 
+            <code>
+                <pre>
+                    lateinit var currentPhotoPath: String
+                    
+                    @Throws(IOException::class)
+                    private fun createImageFile(): File {
+                       DateFormat.getDateTimeInstance()
+                       val timeStamp: String = DateFormat.getDateTimeInstance().format(Date())
+                       val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                       return File.createTempFile(
+                           "JPEG_${timeStamp}_", /* prefix */
+                           ".jpg", /* suffix */
+                           storageDir /* directory */
+                       ).apply {
+                           // Save a file: path for use with ACTION_VIEW intents
+                           currentPhotoPath = absolutePath
+                       }
+                    }
+                </pre>
+            </code>
                 
-                Wow, that picture is blurry! Let’s make this look less like it came from a 2004 Motorola phone, shall we? First, we have to save the image to our phone. In the AndroidManifest.xml, below the line we entered before with the tag uses-feature, add the following:
+            Remember to import all the necessary packages. This will create an image named after the current date and time. Once we’ve saved the file, we have to edit our intent to call this function. Make the necessary changes to dispatchTakePictureIntent()
                 
-                <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-                
-                This will let us put the image in storage. Now, let’s actually make the image. This code will do that for us:
-                
-                lateinit var currentPhotoPath: String
-                
-                @Throws(IOException::class)
-                private fun createImageFile(): File {
-                   DateFormat.getDateTimeInstance()
-                   val timeStamp: String = DateFormat.getDateTimeInstance().format(Date())
-                   val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-                   return File.createTempFile(
-                       "JPEG_${timeStamp}_", /* prefix */
-                       ".jpg", /* suffix */
-                       storageDir /* directory */
-                   ).apply {
-                       // Save a file: path for use with ACTION_VIEW intents
-                       currentPhotoPath = absolutePath
-                   }
-                }
-                
-                Remember to import all the necessary packages. This will create an image named after the current date and time. Once we’ve saved the file, we have to edit our intent to call this function. Make the necessary changes to dispatchTakePictureIntent()
-                
-                private fun dispatchTakePictureIntent() {
-                   Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-                       // Ensure that there's a camera activity to handle the intent
-                       takePictureIntent.resolveActivity(packageManager)?.also {
-                           // NEW CODE STARTS HERE
-                           val photoFile: File? = try {
-                               createImageFile()
-                           } catch (ex: IOException) {
-                               // Error occurred while creating the File
-                               null
-                           }
-                           // Continue only if the File was successfully created
-                           photoFile?.also {
-                               val photoURI: Uri = FileProvider.getUriForFile(
-                                   this,
-                                   "com.example.camerademo.fileprovider",
-                                   it
-                               )
-                               takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                               startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+            <code>
+                <pre>
+                    private fun dispatchTakePictureIntent() {
+                       Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                           // Ensure that there's a camera activity to handle the intent
+                           takePictureIntent.resolveActivity(packageManager)?.also {
+                               // NEW CODE STARTS HERE
+                               val photoFile: File? = try {
+                                   createImageFile()
+                               } catch (ex: IOException) {
+                                   // Error occurred while creating the File
+                                   null
+                               }
+                               // Continue only if the File was successfully created
+                               photoFile?.also {
+                                   val photoURI: Uri = FileProvider.getUriForFile(
+                                       this,
+                                       "com.example.camerademo.fileprovider",
+                                       it
+                                   )
+                                   takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                                   startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                               }
                            }
                        }
-                   }
-                }
+                    }
+                </pre>
+            </code>
                 
-                We need a place for these photos. Add a resource directory named xml in the res folder. Then, create a file called “file_paths”.
+            We need a place for these photos. Add a resource directory named xml in the res folder. Then, create a file called “file_paths”.<br>
+             
+            
+            <video width="320" height="240" controls>
+                <source src="assets/file_paths.mp4" type="video/mp4">
+            </video>
+            
                 
-                < RECORDING HERE >
-                
-                Add the following code to the file_paths.xml you just made.
-                
-                <?xml version="1.0" encoding="utf-8"?>
-                <paths xmlns:android="http://schemas.android.com/apk/res/android">
-                   <external-path name="my_images" path="Android/data/com.example.camerademo/files/Pictures" />
-                </paths>
-                
-                Note: this requires you to enter your package in the path. Make sure to change it if you didn’t use the name “camerademo” for your app.
-                
-                We’re almost done! Once we have that set up, we have to add a provider in our AndroidManifest.xml to help handle these files. Inside the application tags, add the following:
-                
-                <provider
-                   android:name="androidx.core.content.FileProvider"
-                   android:authorities="com.example.camerademo.fileprovider"
-                   android:exported="false"
-                   android:grantUriPermissions="true">
-                   <meta-data
-                       android:name="android.support.FILE_PROVIDER_PATHS"
-                       android:resource="@xml/file_paths"></meta-data>
-                </provider>
-                
-                Make sure that the value in android:authorities is unique for this project, you’ll run into issues if you try to use the same provider in more than one app!
-                
-                That image looks much clearer. Lets add more! In MainActivity, make an array of strings:
-                val pictures = ArrayList<String>()
-                
-                Now, when we take a picture we can add it to this array in our function onActivityResult before when we set the image into our ImageView.
-                
-                pictures.add(currentPhotoPath)
-                
-                How can we go through these pictures? Let’s make clicking on the ImageView go to the next image. Add a new variable to our class.
-                
-                var index = 0
-                
-                Now make clicking the ImageView iterate through our pictures in onCreate.
-                
-                val imageView = findViewById<ImageView>(R.id.main_image_view)
-                imageView.setOnClickListener {
-                   if (pictures.size > index) {
-                       imageView.setImageURI(Uri.fromFile(File(pictures[index])))
-                       index++
-                   } else {
-                       index = 0
-                       if (pictures.size > 0) {
-                           imageView.setImageURI(Uri.fromFile(File(pictures[index])))
-                       }
-                   }
-                }
-                
-                That’s it! Take some pictures and loop through them!
+            Add the following code to the file_paths.xml you just made.
+            
+            <code>
+                <pre>
+                    &lt;?xml version="1.0" encoding="utf-8"?&gt;
+                    &gt;paths xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+                        &lt;external-path name="my_images" path="Android/data/com.example.camerademo/files/Pictures" /&gt;
+                    &lt;/paths&gt;
+                </pre>
+            </code>
+            
+            Note: this requires you to enter your package in the path. Make sure to change it if you didn’t use the name “camerademo” for your app.<br>
+            
+            We’re almost done! Once we have that set up, we have to add a provider in our AndroidManifest.xml to help handle these files. Inside the application tags, add the following:<br>
+            
+            <code>
+                <pre>
+                    &lt;provider
+                        android:name="androidx.core.content.FileProvider"
+                        android:authorities="com.example.camerademo.fileprovider"
+                        android:exported="false"
+                        android:grantUriPermissions="true">
+                        &lt;meta-data
+                            android:name="android.support.FILE_PROVIDER_PATHS"
+                            android:resource="@xml/file_paths"&gt;&lt;/meta-data&gt;
+                    &lt;/provider&gt;
+                </pre>
+            </code>
+            
+            Make sure that the value in android:authorities is unique for this project, you’ll run into issues if you try to use the same provider in more than one app!<br>
+
+            <img src="assets/clearimage.png" width=300px height=550px/>
+            
+            That image looks much clearer. Lets add more! In MainActivity, make an array of strings:<br>
+            <code>
+                <pre>
+                    val pictures = ArrayList&lt;String&gt;()
+                </pre>
+            </code>
+            
+            Now, when we take a picture we can add it to this array in our function onActivityResult before when we set the image into our ImageView.<br>
+            
+            <code>
+                <pre>
+                    pictures.add(currentPhotoPath)
+                </pre>
+            </code>
+            
+            How can we go through these pictures? Let’s make clicking on the ImageView go to the next image. Add a new variable to our class.<br>
+            
+            <code>
+                <pre>
+                    var index = 0
+                </pre>
+            </code>
+            
+            Now make clicking the ImageView iterate through our pictures in onCreate.<br>
+            
+            <code>
+                <pre>
+                    val imageView = findViewById&lt;ImageView&gt;(R.id.main_image_view)
+                    imageView.setOnClickListener {
+                        if (pictures.size > index) {
+                            imageView.setImageURI(Uri.fromFile(File(pictures[index])))
+                            index++
+                        } else {
+                            index = 0
+                            if (pictures.size > 0) {
+                                imageView.setImageURI(Uri.fromFile(File(pictures[index])))
+                            }
+                        }
+                    }        
+                </pre>
+            </code>
+
+            That’s it! Take some pictures and loop through them!
                 
         </div>
     </body>
