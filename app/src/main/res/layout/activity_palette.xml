@@ -1,33 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView
+    <GridView
+        android:id="@+id/palette_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:columnWidth="115dp"
+        android:gravity="center"
+        android:horizontalSpacing="5dp"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="5dp">
 
-        <TableLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:contentDescription="Test Image"
-                    tools:src="@tools:sample/backgrounds/scenic[0]" />
-            </TableRow>
-        </TableLayout>
-    </ScrollView>
+    </GridView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/camera_button"
@@ -39,7 +28,25 @@
         android:clickable="true"
         android:elevation="2dp"
         android:focusable="true"
+        android:tint="@android:color/white"
         app:backgroundTint="#F44336"
         app:rippleColor="#F44336"
-        app:srcCompat="@android:drawable/ic_menu_camera" />
+        app:srcCompat="@drawable/baseline_camera_alt_black_18dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/gallery_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="25dp"
+        android:backgroundTint="@android:color/holo_green_light"
+        android:clickable="true"
+        android:elevation="2dp"
+        android:focusable="true"
+        android:tint="@android:color/white"
+        app:backgroundTint="@android:color/holo_green_light"
+        app:srcCompat="@drawable/baseline_insert_photo_black_18dp" />
+
 </RelativeLayout>

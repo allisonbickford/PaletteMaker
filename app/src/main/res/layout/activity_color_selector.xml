@@ -18,16 +18,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.example.palettemaker.MovableFloatingActionButton
         android:id="@+id/selector_button"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="200dp"
-        android:layout_marginTop="350dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:clickable="true"
         android:elevation="5dp"
         android:focusable="true"
-        app:backgroundTint="@android:color/transparent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:backgroundTint="@android:color/holo_green_light"
+        app:layout_constraintStart_toStartOf="@id/color_selector_image_view"
+        app:layout_constraintTop_toTopOf="@id/color_selector_image_view"
+        app:rippleColor="#8BC34A" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/confirm_color_button"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:backgroundTint="@android:color/black"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="Select"
+        app:backgroundTint="#00FFFFFF"
+        app:icon="@drawable/baseline_check_black_18dp"
+        app:iconSize="20dp"
+        app:iconTint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/color_selector_image_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
