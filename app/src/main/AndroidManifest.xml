@@ -21,14 +21,14 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
-        <activity android:name=".PaletteActivity">
+        <activity android:name=".AllPalettesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AllPalettesActivity"
+        <activity android:name=".PaletteActivity"
             android:label="Palette"
             android:theme="@style/AppTheme"/>
         <activity android:name=".ColorSelectorActivity"

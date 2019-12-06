@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">PaletteMaker</string>
-    <string name="gallery_dialog_text">Would you like to use your last taken photo or select one from your gallery?</string>
+    <string name="camera_dialog_text">Would you like to use your last taken photo or take a new one?</string>
     <string name="gallery_label">Gallery</string>
     <string name="last_image_label">Last Image</string>
 </resources>

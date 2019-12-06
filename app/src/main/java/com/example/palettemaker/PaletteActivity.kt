@@ -1,13 +1,16 @@
 package com.example.palettemaker
 
 import android.Manifest
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.GridView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -20,39 +23,84 @@ import java.io.IOException
 import java.text.DateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import android.graphics.Color
+import android.text.InputType
+import android.widget.EditText
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.graphics.drawable.DrawableCompat.*
 
 
-class PaletteActivity: AppCompatActivity(), GalleryDialogFragment.GalleryDialogListener {
+class PaletteActivity: AppCompatActivity(), CameraDialogFragment.CameraDialogListener {
     val REQUEST_IMAGE_CAPTURE = 1
     val COLOR_SELECTOR_INTENT = 2
     val REQUEST_GALLERY_SELECT = 3
     var currentPhotoPath: String = ""
     var colors: ArrayList<String> = ArrayList()
     var colorsAdapter = ColorsAdapter(this, colors)
+    var palette: Palette = Palette("New Palette")
+    var paletteResult = Intent()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_palette)
+
+        val currentColors = intent.extras?.get("colors")
+        if (currentColors != null) {
+            colorsAdapter.setColors(currentColors as ArrayList<String>)
+            colorsAdapter.notifyDataSetChanged()
+            palette.setName(intent.extras?.get("name") as String)
+        }
+
+        paletteResult.putExtra("name", palette.getName())
+        paletteResult.putExtra("colors", palette.getColors())
+        supportActionBar!!.title = palette.getName()
+
         val cameraButton = findViewById<FloatingActionButton>(R.id.camera_button)
-        cameraButton.setOnClickListener { dispatchTakePictureIntent() }
+        val cameraDialog = CameraDialogFragment()
+        cameraButton.setOnClickListener {
+            if (currentPhotoPath.isEmpty()) {
+                dispatchTakePictureIntent()
+            } else {
+                cameraDialog.show(supportFragmentManager, "CameraDialogFragment")
+            }
+        }
 
         val galleryButton = findViewById<FloatingActionButton>(R.id.gallery_select)
-        val galleryDialog = GalleryDialogFragment()
         galleryButton.setOnClickListener {
-            if (currentPhotoPath.isEmpty()) {
-                dispatchGalleryImageIntent()
-            } else {
-                galleryDialog.show(supportFragmentManager, "GalleryDialogFragment")
-            }
+            dispatchGalleryImageIntent()
         }
 
         val gridView = findViewById<GridView>(R.id.palette_view)
         gridView.adapter = colorsAdapter
     }
 
-    override fun onDialogGalleryClick(dialog: DialogFragment) {
-        dispatchGalleryImageIntent()
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.palette_menu, menu)
+        var drawable = menu.findItem(R.id.save_palette).icon
+        if (drawable != null) {
+            drawable = wrap(drawable)
+            setTint(drawable, Color.WHITE)
+            menu.findItem(R.id.save_palette).icon = drawable
+        }
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.save_palette) {
+            paletteResult.putExtra("name", palette.getName())
+            paletteResult.putExtra("colors", palette.getColors())
+            setResult(Activity.RESULT_OK, paletteResult)
+            finish()
+        } else if (item.itemId == R.id.edit_title_btn) {
+            showEditTitleDialog()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onDialogPictureClick(dialog: DialogFragment) {
+        dispatchTakePictureIntent()
     }
 
     override fun onDialogLastImageClick(dialog: DialogFragment) {
@@ -66,6 +114,31 @@ class PaletteActivity: AppCompatActivity(), GalleryDialogFragment.GalleryDialogL
         val photoPickerIntent = Intent(Intent.ACTION_PICK)
         photoPickerIntent.type = "image/*"
         startActivityForResult(photoPickerIntent, REQUEST_GALLERY_SELECT)
+    }
+
+    private fun showEditTitleDialog() {
+        val builder = AlertDialog.Builder(
+            ContextThemeWrapper(this, R.style.DialogTheme))
+        builder.setTitle("Change Palette Title")
+
+        // Set up the input
+        val input = EditText(this)
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        builder.setView(input)
+
+        // Set up the buttons
+        builder.setPositiveButton("OK"
+        ) { _, _ ->
+            if (input.text.toString().isNotEmpty()) {
+                palette.setName(input.text.toString())
+                paletteResult.putExtra("name", palette.getName())
+                supportActionBar!!.title = palette.getName()
+            }
+        }
+        builder.setNegativeButton("Cancel"
+        ) { dialog, _ -> dialog.cancel() }
+
+        builder.show()
     }
 
     /**
@@ -143,10 +216,11 @@ class PaletteActivity: AppCompatActivity(), GalleryDialogFragment.GalleryDialogL
             if (colorHexCode != null) {
                 this.colorsAdapter.addColor(colorHexCode as String)
                 this.colorsAdapter.notifyDataSetChanged()
+                palette.addColor(colorHexCode)
+                paletteResult.putExtra("colors", palette.getColors())
             }
         } else if (requestCode == REQUEST_GALLERY_SELECT && resultCode == RESULT_OK) {
             val selectorIntent = Intent(this, ColorSelectorActivity::class.java)
-            Log.d("DATA****", data?.data.toString())
             val selectedImage = data?.data
             if (selectedImage != null) {
                 selectorIntent.putExtra("image_path", getRealPathFromURI(selectedImage))

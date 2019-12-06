@@ -10,11 +10,11 @@ import android.os.Bundle
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.DialogFragment
 
-class GalleryDialogFragment: DialogFragment() {
-    internal lateinit var listener: GalleryDialogListener
+class CameraDialogFragment: DialogFragment() {
+    internal lateinit var listener: CameraDialogListener
 
-    interface GalleryDialogListener {
-        fun onDialogGalleryClick(dialog: DialogFragment)
+    interface CameraDialogListener {
+        fun onDialogPictureClick(dialog: DialogFragment)
         fun onDialogLastImageClick(dialog: DialogFragment)
     }
 
@@ -22,11 +22,11 @@ class GalleryDialogFragment: DialogFragment() {
         return activity?.let {
             // Use the Builder class for convenient dialog construction
             val builder = AlertDialog.Builder(ContextThemeWrapper(context, android.R.style.DeviceDefault_Light_ButtonBar_AlertDialog))
-            builder.setMessage(R.string.gallery_dialog_text)
-                .setPositiveButton(R.string.gallery_label
+            builder.setMessage(R.string.camera_dialog_text)
+                .setPositiveButton("New Picture"
                 ) { _, _ ->
                     // Send the positive button event back to the host activity
-                    listener.onDialogGalleryClick(this)
+                    listener.onDialogPictureClick(this)
                 }
 
                 .setNegativeButton(R.string.last_image_label
@@ -43,7 +43,7 @@ class GalleryDialogFragment: DialogFragment() {
         // Verify that the host activity implements the callback interface
         try {
             // Instantiate the NoticeDialogListener so we can send events to the host
-            listener = context as GalleryDialogListener
+            listener = context as CameraDialogListener
         } catch (e: ClassCastException) {
             // The activity doesn't implement the interface, throw exception
             throw ClassCastException((context.toString() +
