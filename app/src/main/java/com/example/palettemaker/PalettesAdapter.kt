@@ -62,7 +62,16 @@ class PalettesAdapter(context: Context, private var palettes: ArrayList<Palette>
     }
 
     fun addPalette(palette: Palette) {
-        this.palettes.add(palette)
+        var foundDuplicate = false
+        for (i in 0..(this.palettes.size - 1)) {
+            if (this.palettes[i].getName() == palette.getName()) {
+                val newList = this.palettes[i].getColors()
+                newList.addAll(palette.getColors())
+                this.palettes[i].setColors(newList)
+                foundDuplicate = true
+            }
+        }
+        if (!foundDuplicate) { this.palettes.add(palette) }
     }
 
     fun removePalette(palette: Palette) {

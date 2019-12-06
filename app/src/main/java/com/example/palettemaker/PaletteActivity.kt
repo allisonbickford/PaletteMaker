@@ -23,17 +23,14 @@ import java.io.IOException
 import java.text.DateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import android.content.DialogInterface
 import android.graphics.Color
 import android.text.InputType
-import android.util.Log
 import android.widget.EditText
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.graphics.drawable.DrawableCompat.*
 
 
-class PaletteActivity: AppCompatActivity(), GalleryDialogFragment.GalleryDialogListener {
+class PaletteActivity: AppCompatActivity(), CameraDialogFragment.CameraDialogListener {
     val REQUEST_IMAGE_CAPTURE = 1
     val COLOR_SELECTOR_INTENT = 2
     val REQUEST_GALLERY_SELECT = 3
@@ -48,21 +45,30 @@ class PaletteActivity: AppCompatActivity(), GalleryDialogFragment.GalleryDialogL
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_palette)
 
+        val currentColors = intent.extras?.get("colors")
+        if (currentColors != null) {
+            colorsAdapter.setColors(currentColors as ArrayList<String>)
+            colorsAdapter.notifyDataSetChanged()
+            palette.setName(intent.extras?.get("name") as String)
+        }
+
         paletteResult.putExtra("name", palette.getName())
         paletteResult.putExtra("colors", palette.getColors())
         supportActionBar!!.title = palette.getName()
 
         val cameraButton = findViewById<FloatingActionButton>(R.id.camera_button)
-        cameraButton.setOnClickListener { dispatchTakePictureIntent() }
+        val cameraDialog = CameraDialogFragment()
+        cameraButton.setOnClickListener {
+            if (currentPhotoPath.isEmpty()) {
+                dispatchTakePictureIntent()
+            } else {
+                cameraDialog.show(supportFragmentManager, "CameraDialogFragment")
+            }
+        }
 
         val galleryButton = findViewById<FloatingActionButton>(R.id.gallery_select)
-        val galleryDialog = GalleryDialogFragment()
         galleryButton.setOnClickListener {
-            if (currentPhotoPath.isEmpty()) {
-                dispatchGalleryImageIntent()
-            } else {
-                galleryDialog.show(supportFragmentManager, "GalleryDialogFragment")
-            }
+            dispatchGalleryImageIntent()
         }
 
         val gridView = findViewById<GridView>(R.id.palette_view)
@@ -93,8 +99,8 @@ class PaletteActivity: AppCompatActivity(), GalleryDialogFragment.GalleryDialogL
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onDialogGalleryClick(dialog: DialogFragment) {
-        dispatchGalleryImageIntent()
+    override fun onDialogPictureClick(dialog: DialogFragment) {
+        dispatchTakePictureIntent()
     }
 
     override fun onDialogLastImageClick(dialog: DialogFragment) {
