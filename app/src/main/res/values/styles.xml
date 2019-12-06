@@ -8,4 +8,17 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:buttonBarStyle">@style/ClearButton</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/ClearButton</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/ClearButton</item>
+    </style>
+
+    <style name="ClearButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:backgroundTint">@android:color/transparent</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
 </resources>

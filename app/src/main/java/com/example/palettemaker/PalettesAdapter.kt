@@ -29,11 +29,18 @@ class PalettesAdapter(context: Context, private var palettes: ArrayList<Palette>
         )
         val paletteLabel = resultingView.findViewById<TextView>(R.id.palette_label)
 
+        var index = -1
         for (i in 0..3) {
             if (palette.getColors().size > i) {
                 val color = palette.getColors()[i]
-                Log.d("COLOR~~~~~~~~~~~~~~~~~", color)
                 colorSlots[i].setBackgroundColor(Color.parseColor(color))
+            } else if (palette.getColors().size > 0) {
+                if (palette.getColors().size - 1 > index) {
+                    index++
+                } else {
+                    index = 0
+                }
+                colorSlots[i].setBackgroundColor(Color.parseColor(palette.getColors()[index]))
             }
         }
 

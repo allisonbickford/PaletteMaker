@@ -40,7 +40,7 @@
     <TextView
         android:id="@+id/palette_label"
         android:layout_width="101dp"
-        android:layout_height="20dp"
+        android:layout_height="wrap_content"
         android:text="Palette1"
         android:textAlignment="center"
         android:textSize="16sp" />

@@ -19,11 +19,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Matrix
 import androidx.core.graphics.ColorUtils
-import android.media.ExifInterface
-import android.net.Uri
-import android.util.DisplayMetrics
-import android.util.Log
-import java.io.File
 
 
 class ColorSelectorActivity: AppCompatActivity() {

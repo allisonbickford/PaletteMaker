@@ -2,6 +2,7 @@ package com.example.palettemaker
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -22,7 +23,14 @@ import java.io.IOException
 import java.text.DateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-
+import android.content.DialogInterface
+import android.graphics.Color
+import android.text.InputType
+import android.util.Log
+import android.widget.EditText
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.graphics.drawable.DrawableCompat.*
 
 
 class PaletteActivity: AppCompatActivity(), GalleryDialogFragment.GalleryDialogListener {
@@ -32,7 +40,7 @@ class PaletteActivity: AppCompatActivity(), GalleryDialogFragment.GalleryDialogL
     var currentPhotoPath: String = ""
     var colors: ArrayList<String> = ArrayList()
     var colorsAdapter = ColorsAdapter(this, colors)
-    var palette: Palette = Palette("test")
+    var palette: Palette = Palette("New Palette")
     var paletteResult = Intent()
 
 
@@ -42,6 +50,7 @@ class PaletteActivity: AppCompatActivity(), GalleryDialogFragment.GalleryDialogL
 
         paletteResult.putExtra("name", palette.getName())
         paletteResult.putExtra("colors", palette.getColors())
+        supportActionBar!!.title = palette.getName()
 
         val cameraButton = findViewById<FloatingActionButton>(R.id.camera_button)
         cameraButton.setOnClickListener { dispatchTakePictureIntent() }
@@ -63,6 +72,12 @@ class PaletteActivity: AppCompatActivity(), GalleryDialogFragment.GalleryDialogL
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.palette_menu, menu)
+        var drawable = menu.findItem(R.id.save_palette).icon
+        if (drawable != null) {
+            drawable = wrap(drawable)
+            setTint(drawable, Color.WHITE)
+            menu.findItem(R.id.save_palette).icon = drawable
+        }
         return true
     }
 
@@ -72,6 +87,8 @@ class PaletteActivity: AppCompatActivity(), GalleryDialogFragment.GalleryDialogL
             paletteResult.putExtra("colors", palette.getColors())
             setResult(Activity.RESULT_OK, paletteResult)
             finish()
+        } else if (item.itemId == R.id.edit_title_btn) {
+            showEditTitleDialog()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -91,6 +108,31 @@ class PaletteActivity: AppCompatActivity(), GalleryDialogFragment.GalleryDialogL
         val photoPickerIntent = Intent(Intent.ACTION_PICK)
         photoPickerIntent.type = "image/*"
         startActivityForResult(photoPickerIntent, REQUEST_GALLERY_SELECT)
+    }
+
+    private fun showEditTitleDialog() {
+        val builder = AlertDialog.Builder(
+            ContextThemeWrapper(this, R.style.DialogTheme))
+        builder.setTitle("Change Palette Title")
+
+        // Set up the input
+        val input = EditText(this)
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        builder.setView(input)
+
+        // Set up the buttons
+        builder.setPositiveButton("OK"
+        ) { _, _ ->
+            if (input.text.toString().isNotEmpty()) {
+                palette.setName(input.text.toString())
+                paletteResult.putExtra("name", palette.getName())
+                supportActionBar!!.title = palette.getName()
+            }
+        }
+        builder.setNegativeButton("Cancel"
+        ) { dialog, _ -> dialog.cancel() }
+
+        builder.show()
     }
 
     /**
