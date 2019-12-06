@@ -47,6 +47,10 @@ class ColorsAdapter(context: Context, private var colors: ArrayList<String>) : B
         return colors.size
     }
 
+    fun setColors(colors: ArrayList<String>) {
+        this.colors = colors
+    }
+
     fun addColor(color: String) {
         this.colors.add(color)
     }
