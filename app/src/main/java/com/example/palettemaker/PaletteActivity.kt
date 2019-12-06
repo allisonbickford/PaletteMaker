@@ -1,13 +1,15 @@
 package com.example.palettemaker
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.GridView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -22,6 +24,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
+
 class PaletteActivity: AppCompatActivity(), GalleryDialogFragment.GalleryDialogListener {
     val REQUEST_IMAGE_CAPTURE = 1
     val COLOR_SELECTOR_INTENT = 2
@@ -29,11 +32,17 @@ class PaletteActivity: AppCompatActivity(), GalleryDialogFragment.GalleryDialogL
     var currentPhotoPath: String = ""
     var colors: ArrayList<String> = ArrayList()
     var colorsAdapter = ColorsAdapter(this, colors)
+    var palette: Palette = Palette("test")
+    var paletteResult = Intent()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_palette)
+
+        paletteResult.putExtra("name", palette.getName())
+        paletteResult.putExtra("colors", palette.getColors())
+
         val cameraButton = findViewById<FloatingActionButton>(R.id.camera_button)
         cameraButton.setOnClickListener { dispatchTakePictureIntent() }
 
@@ -49,6 +58,22 @@ class PaletteActivity: AppCompatActivity(), GalleryDialogFragment.GalleryDialogL
 
         val gridView = findViewById<GridView>(R.id.palette_view)
         gridView.adapter = colorsAdapter
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.palette_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.save_palette) {
+            paletteResult.putExtra("name", palette.getName())
+            paletteResult.putExtra("colors", palette.getColors())
+            setResult(Activity.RESULT_OK, paletteResult)
+            finish()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDialogGalleryClick(dialog: DialogFragment) {
@@ -143,10 +168,11 @@ class PaletteActivity: AppCompatActivity(), GalleryDialogFragment.GalleryDialogL
             if (colorHexCode != null) {
                 this.colorsAdapter.addColor(colorHexCode as String)
                 this.colorsAdapter.notifyDataSetChanged()
+                palette.addColor(colorHexCode)
+                paletteResult.putExtra("colors", palette.getColors())
             }
         } else if (requestCode == REQUEST_GALLERY_SELECT && resultCode == RESULT_OK) {
             val selectorIntent = Intent(this, ColorSelectorActivity::class.java)
-            Log.d("DATA****", data?.data.toString())
             val selectedImage = data?.data
             if (selectedImage != null) {
                 selectorIntent.putExtra("image_path", getRealPathFromURI(selectedImage))

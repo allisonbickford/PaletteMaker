@@ -2,8 +2,10 @@ package com.example.palettemaker
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -15,8 +17,13 @@ import com.google.android.material.button.MaterialButton
 import kotlin.math.roundToInt
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.Matrix
 import androidx.core.graphics.ColorUtils
-import androidx.core.view.doOnLayout
+import android.media.ExifInterface
+import android.net.Uri
+import android.util.DisplayMetrics
+import android.util.Log
+import java.io.File
 
 
 class ColorSelectorActivity: AppCompatActivity() {
@@ -30,9 +37,21 @@ class ColorSelectorActivity: AppCompatActivity() {
         val imagePath = extras?.get("image_path") as String
 
         val imageView = findViewById<ImageView>(R.id.color_selector_image_view)
-        val bitmap = BitmapFactory.decodeFile(imagePath)
-        val orientedBitmap = ExifUtil.rotateBitmap(imagePath, bitmap)
-        imageView.setImageBitmap(orientedBitmap)
+        var bitmap = BitmapFactory.decodeFile(imagePath)
+        val matrix = Matrix()
+        if (bitmap.width > bitmap.height) {
+            matrix.postRotate(90.toFloat())
+            bitmap = Bitmap.createBitmap(
+                bitmap,
+                0,
+                0,
+                bitmap.width,
+                bitmap.height,
+                matrix,
+                true
+            )
+        }
+        imageView.setImageBitmap(bitmap)
 
         // confirm selection
         val confirmButton = findViewById<MaterialButton>(R.id.confirm_color_button)
