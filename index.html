@@ -3,8 +3,6 @@
         <h1>
             Welcome!
         </h1>
-        
-        <>
             <p>
                 Today we are going to show you how to implement the camera on an Android project. We will be using Kotlin to create <br>
                 our app. Starting off, create a new project in Android Studio.<br>
@@ -57,16 +55,16 @@
                 To start off, we need to make a place to put our images! Firstly, add a "RelativeLayout" to your default <br>
                 ConstraintLayout. Put an ImageView into your “activity_main.xml”. Select any image (we will be switching it out <br>
                 later). We are using the id “main_image_view”. Make sure you change the layout_width and layout_height to <br>
-                match_parent.<br>
+                match_parent. <br>
             </p>
                 
             <video width="320" height="240" controls>
                 <source src="assets/placingpieces.mp4" type="video/mp4">
             </video>
 
-            <br>
+
             <p>
-                We will also add a FloatingActionButton to trigger the camera. Add a FloatingActionButton to the screen and search
+                We will also add a FloatingActionButton to trigger the camera. Add a FloatingActionButton to the screen and search<br>
                 for “camera” when prompted to choose an icon. Use the icon “ic_menu_camera”. Give it a distinctive id. We will use <br>
                 “camera_button”.<br>
             </p>
@@ -84,7 +82,7 @@
                     android:layout_marginBottom="25dp"
                 </pre>
             </code>
-                <br>
+
             <p>
                 This will align your button centered horizontally at the bottom of the screen, leaving space between the bottom of <br>
                 the screen and your button.<br>
@@ -152,15 +150,16 @@
             </p>
 
             <code>
-                override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-                if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-                    val imageView: ImageView! = findViewById(R.id.main_image_view)
-                    val imageBitmap = data?.extras?.get("data") as Bitmap
-                    imageView.setImageBitmap(imageBitmap)
-                }
-                super.onActivityResult(requestCode, resultCode, data)
-            }
-
+                <pre>
+                    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+                        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+                                val imageView: ImageView! = findViewById(R.id.main_image_view)
+                                val imageBitmap = data?.extras?.get("data") as Bitmap
+                                imageView.setImageBitmap(imageBitmap)
+                            }
+                        super.onActivityResult(requestCode, resultCode, data)
+                    }
+                </pre>
             </code>
 
             
