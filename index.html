@@ -4,7 +4,7 @@
             Welcome!
         </h1>
         
-        <div>
+        <>
             <p>
                 Today we are going to show you how to implement the camera on an Android project. We will be using Kotlin to create <br>
                 our app. Starting off, create a new project in Android Studio.<br>
@@ -151,15 +151,17 @@
                 Now that we can take a picture, let’s put it into our ImageView. Add the following function to your MainActivity.<br>
             </p>
 
-
-            override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+            <code>
+                override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
                 if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-                    val imageView = findViewById<ImageView>(R.id.main_image_view)
+                    val imageView: ImageView! = findViewById(R.id.main_image_view)
                     val imageBitmap = data?.extras?.get("data") as Bitmap
                     imageView.setImageBitmap(imageBitmap)
                 }
                 super.onActivityResult(requestCode, resultCode, data)
             }
+
+            </code>
 
             
             <p>
@@ -362,6 +364,6 @@
                 color schemes. <br>
             </p>
                 
-        </div>
+        </Div>
     </body>
 </html>
