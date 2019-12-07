@@ -1,3 +1,8 @@
 theme: jekyll-theme-merlot
 future: true
 timezone: TIMEZONE
+
+p {
+text-indent: 10%;
+background: plum;
+}
