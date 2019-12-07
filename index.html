@@ -5,15 +5,19 @@
         </h1>
         
         <div>
-            Today we are going to show you how to implement the camera on an Android project. We will be using Kotlin to create our app.<br>
-            Starting off, create a new project in Android Studio.<br>
+                    Today we are going to show you how to implement the camera on an Android <br>
+                project. We will be using Kotlin to create our app. Starting off, create a new
+                project in Android Studio.<br>
             
             <img src="assets/newproject.png" width="400" height="200"/>
             
-            When prompted, choose “Empty Activity” and name your app. We have chosen “CameraDemo”, but please be as creative or functional as you desire!<br>
-            This app will put images into a slideshow for your viewing pleasure (or your Mom’s)!<br>
+            <br>
+                    When prompted, choose “Empty Activity” and name your app. We have chosen
+                “CameraDemo”, but please be as creative or functional as you desire! This app will <br>
+                put images into a slideshow for your viewing pleasure (or your Mom’s)!<br>
             <p>
-            Make sure you have Kotlin enabled by verifying it is in your project-level build.gradle dependencies:<br>
+                    Make sure you have Kotlin enabled by verifying it is in your project-level<br>
+                build.gradle dependencies:<br>
             <code>
                 <pre>
                     dependencies {
@@ -25,7 +29,8 @@
                 </pre>
             </code>
     
-            We didn’t change the module-level dependencies, but I will put them here so you can verify should any troubles arise:<br>
+                    We didn’t change the module-level dependencies, but I will put them here so you
+                can verify should any troubles arise: <br>
             
             <code>
                 <pre>
@@ -43,17 +48,24 @@
                 </pre>
             </code>
 
-            To start off, we need to make a place to put our images! Firstly, add a "RelativeLayout" to your default ConstraintLayout.</br>
-            Put an ImageView into your “activity_main.xml”. Select any image (we will be switching it out later). We are using the id “main_image_view”. Make sure you change the layout_width and layout_height to match_parent.<br>
+                    To start off, we need to make a place to put our images! Firstly, add a <br>
+                "RelativeLayout" to your default ConstraintLayout. Put an ImageView into your <br>
+                “activity_main.xml”. Select any image (we will be switching it out later). We are <br>
+                using the id “main_image_view”. Make sure you change the layout_width and <br>
+                layout_height to match_parent.<br>
                 
             <video width="320" height="240" controls>
                 <source src="assets/placingpieces.mp4" type="video/mp4">
             </video>
+
+
+                    We will also add a FloatingActionButton to trigger the camera. Add a <br>
+                FloatingActionButton to the screen and search for “camera” when prompted to choose <br>
+                an icon. Use the icon “ic_menu_camera”. Give it a distinctive id. We will use <br>
+                “camera_button”.<br>
                 
-                
-            We will also add a FloatingActionButton to trigger the camera. Add a FloatingActionButton to the screen and search for “camera” when prompted to choose an icon. Use the icon “ic_menu_camera”. Give it a distinctive id. We will use “camera_button”.<br>
-                
-            Navigate to the “Text” tab in Android’s Layout Builder and add the following code below the id of your FloatingActionButton:<br>
+                    Navigate to the “Text” tab in Android’s Layout Builder and add the following
+                code below the id of your FloatingActionButton:<br>
                 
             <code>
                 <pre>
@@ -63,10 +75,12 @@
                     android:layout_marginBottom="25dp"
                 </pre>
             </code>
+                <br>
+                    This will align your button centered horizontally at the bottom of the screen, <br>
+                leaving space between the bottom of the screen and your button.<br>
             
-            This will align your button centered horizontally at the bottom of the screen, leaving space between the bottom of the screen and your button.<br>
-            
-            In order to use the camera, we have to register it in the AndroidManifest.xml. Add the following line between the manifest and application tags:<br>
+                    In order to use the camera, we have to register it in the AndroidManifest.xml.
+                Add the following line between the manifest and application tags:<br>
             
             <code>
                 <pre>
@@ -75,7 +89,8 @@
                 </pre>
             </code>
 
-            Next, we have to create an intent to the camera in our MainActivity. Add this below your onCreate method:<br>
+                    Next, we have to create an intent to the camera in our MainActivity. Add this <br>
+                below your onCreate method:<br>
             
             <code>
                 <pre>
@@ -91,7 +106,7 @@
                 </pre>
             </code>
                 
-            Be sure to add the following imports:<br>
+                Be sure to add the following imports:<br>
             
             <code>
                 <pre>
@@ -100,7 +115,8 @@
                 </pre>
             </code>
             
-            Let’s connect our button to the camera intent! In your MainActivity’s onCreate function, add the following lines of code:<br>
+                    Let’s connect our button to the camera intent! In your MainActivity’s onCreate <br>
+                function, add the following lines of code:<br>
             
             <code>
                 <pre>
@@ -109,11 +125,13 @@
                 </pre>
             </code>
             
-            This is a great time to run your app and make sure it works. You should be able to click the camera button, take a picture, and be sent back.<br>
+                    This is a great time to run your app and make sure it works. You should be able <br>
+                to click the camera button, take a picture, and be sent back.<br>
                 
             
             
-            Now that we can take a picture, let’s put it into our ImageView. Add the following function to your MainActivity.
+                    Now that we can take a picture, let’s put it into our ImageView. Add the <br>
+                following function to your MainActivity.<br>
             
             override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
                 if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -124,11 +142,15 @@
                 super.onActivityResult(requestCode, resultCode, data)
             }
             
-            When you successfully take a picture, this will set the image in the ImageView to the picture you just took. Run your app and see how it works!<br>
+                    When you successfully take a picture, this will set the image in the ImageView <br>
+                to the picture you just took. Run your app and see how it works!<br>
             
             <img src="assets/blurrypicture.png" width="300px" height="550px"/>
 
-            Wow, that picture is blurry! Let’s make this look less like it came from a 2004 Motorola phone, shall we? First, we have to save the image to our phone. In the AndroidManifest.xml, below the line we entered before with the tag uses-feature, add the following:<br>
+                    Wow, that picture is blurry! Let’s make this look less like it came from a 2004 <br>
+                Motorola phone, shall we? First, we have to save the image to our phone. In the <br>
+                <AndroidManifest.xml, below the line we entered before with the tag uses-feature, <br>
+                add the following:<br>
             
             <code>
                 <pre>
@@ -136,7 +158,8 @@
                 </pre>
             </code>
                 
-            This will let us put the image in storage. Now, let’s actually make the image. This code will do that for us:<br>
+                    This will let us put the image in storage. Now, let’s actually make the image. <br>
+                This code will do that for us:<br>
                 
             <code>
                 <pre>
@@ -159,7 +182,10 @@
                 </pre>
             </code>
                 
-            Remember to import all the necessary packages. This will create an image named after the current date and time. Once we’ve saved the file, we have to edit our intent to call this function. Make the necessary changes to dispatchTakePictureIntent()
+                    Remember to import all the necessary packages. This will create an image named <br>
+                after the current date and time. Once we’ve saved the file, we have to edit our <br>
+                intent to call this function. Make the necessary changes to <br>
+                dispatchTakePictureIntent()<br>
                 
             <code>
                 <pre>
@@ -190,7 +216,8 @@
                 </pre>
             </code>
                 
-            We need a place for these photos. Add a resource directory named xml in the res folder. Then, create a file called “file_paths”.<br>
+                    We need a place for these photos. Add a resource directory named xml in the res <br>
+                folder. Then, create a file called “file_paths”.<br>
              
             
             <video width="320" height="240" controls>
@@ -198,7 +225,7 @@
             </video>
             <br>
                 
-            Add the following code to the file_paths.xml you just made.
+                Add the following code to the file_paths.xml you just made.
             
             <code>
                 <pre>
@@ -209,9 +236,12 @@
                 </pre>
             </code>
             
-            Note: this requires you to enter your package in the path. Make sure to change it if you didn’t use the name “camerademo” for your app.<br>
+                    Note: this requires you to enter your package in the path. Make sure to change <br>
+                it if you didn’t use the name “camerademo” for your app.<br>
             
-            We’re almost done! Once we have that set up, we have to add a provider in our AndroidManifest.xml to help handle these files. Inside the application tags, add the following:<br>
+                    We’re almost done! Once we have that set up, we have to add a provider in our <br>
+                AndroidManifest.xml to help handle these files. Inside the application tags, add <br>
+                the following:<br>
             
             <code>
                 <pre>
@@ -227,18 +257,21 @@
                 </pre>
             </code>
             
-            Make sure that the value in android:authorities is unique for this project, you’ll run into issues if you try to use the same provider in more than one app!<br>
+                    Make sure that the value in android:authorities is unique for this project, <br>
+                you’ll run into issues if you try to use the same provider in more than one app!<br>
 
             <img src="assets/clearimage.png" width=300px height=550px/><br>
             
-            That image looks much clearer. Lets add more! In MainActivity, make an array of strings:<br>
+                    That image looks much clearer. Lets add more! In MainActivity, make an array <br>
+                of strings:<br>
             <code>
                 <pre>
                     val pictures = ArrayList&lt;String&gt;()
                 </pre>
             </code>
             
-            Now, when we take a picture we can add it to this array in our function onActivityResult before when we set the image into our ImageView.<br>
+                    Now, when we take a picture we can add it to this array in our function <br>
+                onActivityResult before when we set the image into our ImageView.<br>
             
             <code>
                 <pre>
@@ -246,7 +279,8 @@
                 </pre>
             </code>
             
-            How can we go through these pictures? Let’s make clicking on the ImageView go to the next image. Add a new variable to our class.<br>
+                    How can we go through these pictures? Let’s make clicking on the ImageView go <br>
+                to the next image. Add a new variable to our class.<br>
             
             <code>
                 <pre>
@@ -254,7 +288,7 @@
                 </pre>
             </code>
             
-            Now make clicking the ImageView iterate through our pictures in onCreate.<br>
+                Now make clicking the ImageView iterate through our pictures in onCreate.<br>
             
             <code>
                 <pre>
@@ -273,9 +307,9 @@
                 </pre>
             </code>
 
-            That’s it! Take some pictures and loop through them!<br>
+                That’s it! Take some pictures and loop through them!<br>
                 <br>
-                The PaletteMaker app can be used for a variety of reasons, such as coming up <br>
+                    The PaletteMaker app can be used for a variety of reasons, such as coming up <br>
                 with elegant color schemes for mobile app/ web development, and also to ease <br>
                 accessibility for those visually impaired with determining suitable contrast <br>
                 of colors. The app raises zero concern for security as it uses no third party <br>
