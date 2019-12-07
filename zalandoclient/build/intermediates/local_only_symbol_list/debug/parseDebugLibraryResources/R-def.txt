@@ -1,0 +1,34 @@
+R_DEF: Internal format may change without notice
+local
+string alpargatas_mujer
+string app_name
+string bailarinas
+string bisuteria_mujer
+string bolsos_mujer
+string botas_mujer
+string botines_mujer
+string calzado_mujer
+string camisas_y_blusas_mujer
+string camisetas_y_tops_mujer
+string chaquetas_y_jerseys
+string cinturones_mujer
+string collares_mujer
+string faldas_mujer
+string gafas_sol_mujer
+string gorros_sombreros_mujer
+string mocasines_mujer
+string mochilas_mujer
+string monederos_mujer
+string monos_mujer
+string pantalones_mujer
+string panuelos_bufandas_mujer
+string relojes_mujer
+string ropa_mujer
+string sandalias_mujer
+string vaqueros_mujer
+string vestidos_mujer
+string zapatillas_deporte_mujer
+string zapatillas_mujer
+string zapatos_planos_mujer
+string zapatos_tacon
+string zuecos

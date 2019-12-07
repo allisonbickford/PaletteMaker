@@ -1,0 +1,25 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/Rosenqm/Documents/CIS357/CIS357PRJ/PaletteMaker/zalandoclient/src/main/AndroidManifest.xml:1:1-2:48
+INJECTED from /Users/Rosenqm/Documents/CIS357/CIS357PRJ/PaletteMaker/zalandoclient/src/main/AndroidManifest.xml:1:1-2:48
+INJECTED from /Users/Rosenqm/Documents/CIS357/CIS357PRJ/PaletteMaker/zalandoclient/src/main/AndroidManifest.xml:1:1-2:48
+	package
+		ADDED from /Users/Rosenqm/Documents/CIS357/CIS357PRJ/PaletteMaker/zalandoclient/src/main/AndroidManifest.xml:2:5-46
+		INJECTED from /Users/Rosenqm/Documents/CIS357/CIS357PRJ/PaletteMaker/zalandoclient/src/main/AndroidManifest.xml
+		INJECTED from /Users/Rosenqm/Documents/CIS357/CIS357PRJ/PaletteMaker/zalandoclient/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/Rosenqm/Documents/CIS357/CIS357PRJ/PaletteMaker/zalandoclient/src/main/AndroidManifest.xml:1:11-69
+uses-sdk
+INJECTED from /Users/Rosenqm/Documents/CIS357/CIS357PRJ/PaletteMaker/zalandoclient/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/Rosenqm/Documents/CIS357/CIS357PRJ/PaletteMaker/zalandoclient/src/main/AndroidManifest.xml
+INJECTED from /Users/Rosenqm/Documents/CIS357/CIS357PRJ/PaletteMaker/zalandoclient/src/main/AndroidManifest.xml
+INJECTED from /Users/Rosenqm/Documents/CIS357/CIS357PRJ/PaletteMaker/zalandoclient/src/main/AndroidManifest.xml
+INJECTED from /Users/Rosenqm/Documents/CIS357/CIS357PRJ/PaletteMaker/zalandoclient/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/Rosenqm/Documents/CIS357/CIS357PRJ/PaletteMaker/zalandoclient/src/main/AndroidManifest.xml
+		ADDED from /Users/Rosenqm/Documents/CIS357/CIS357PRJ/PaletteMaker/zalandoclient/src/main/AndroidManifest.xml
+		INJECTED from /Users/Rosenqm/Documents/CIS357/CIS357PRJ/PaletteMaker/zalandoclient/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/Rosenqm/Documents/CIS357/CIS357PRJ/PaletteMaker/zalandoclient/src/main/AndroidManifest.xml
+		ADDED from /Users/Rosenqm/Documents/CIS357/CIS357PRJ/PaletteMaker/zalandoclient/src/main/AndroidManifest.xml
+		INJECTED from /Users/Rosenqm/Documents/CIS357/CIS357PRJ/PaletteMaker/zalandoclient/src/main/AndroidManifest.xml
